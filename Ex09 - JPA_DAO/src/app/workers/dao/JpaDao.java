@@ -189,16 +189,6 @@ public class JpaDao<E, PK> implements JpaDaoItf<E, PK> {
     @Override
     public int effacerListe() throws MyDBException {
         int nb;
-        try {
-            et.begin();
-            String jpql = "DELETE FROM " + cl.getSimpleName() + " e";
-            Query q = em.createQuery(jpql);
-            nb = q.executeUpdate();
-            et.commit();
-        } catch (Exception ex) {
-            et.rollback();
-            throw new MyDBException(SystemLib.getFullMethodName(), ex.getMessage());
-        }
         return nb;
     }
 
@@ -212,20 +202,6 @@ public class JpaDao<E, PK> implements JpaDaoItf<E, PK> {
     @Override
     public int sauverListe(List<E> list) throws MyDBException {
         int nb = 0;
-        if (list != null && !list.isEmpty()) {
-            try {
-                et.begin();
-                for (E e : list) {
-                    em.persist(e);
-                    nb++;
-                }
-                et.commit();
-
-            } catch (Exception ex) {
-                et.rollback();
-                throw new MyDBException(SystemLib.getFullMethodName(), ex.getMessage());
-            }
-        }
         return nb;
     }
 
